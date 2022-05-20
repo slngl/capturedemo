@@ -135,12 +135,12 @@
     function prepareButton() {
         document.getElementById('btn1').onclick = function () {
             const resultTxt = document.getElementById("pEnvResut")
-            if(!window.hab)
+            if(!window.hap)
             {
-                resultTxt.innerText="window.hab not defined";
+                resultTxt.innerText="window.hap not defined";
                 return
             }
-            window.hab.getEnv(data => {
+            window.hap.getEnv(data => {
                
                  resultTxt.innerText =JSON.stringify(data)
             })
@@ -166,12 +166,12 @@
         document.getElementById('btn2').onclick = function () {
             const select = document.querySelector('input[name="radio"]:checked');
             console.log(select.value)
-            if(!window.hab)
+            if(!window.hap)
             {
-                failCallBack("window.hab not defined")
+                failCallBack("window.hap not defined")
                 return
             }
-            window.hab.scan(select.value, successCallBack, failCallBack, cancelCallBack, completeCallBack)
+            window.hap.scan(select.value, successCallBack, failCallBack, cancelCallBack, completeCallBack)
         }
 
     }
