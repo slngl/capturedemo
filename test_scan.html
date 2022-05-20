@@ -83,6 +83,93 @@
         border-color: aliceblue;
         background-color: white;
     }
+    <!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <p class="title">getEnv</p>
+            <div class="line"></div>
+            <button id="btn1">GETENV</button>
+            <p class="result" id="pEnvResut">
+                show result here
+            </p>
+        </div>
+        <div class="card">
+            <p class="title">scan</p>
+            <div class="line"></div>
+
+            <label class="radio">
+                <input type="radio" id="radio" name="radio" value="0" />
+                Default
+            </label>
+            <label class="radio">
+                <input type="radio" id="radio" name="radio" value="1" />
+                QR Code
+            </label>
+            <label class="radio">
+                <input type="radio" id="radio" name="radio" value="2" />
+                Barcode
+            </label>
+            <button id="btn2">SCAN</button>
+            <p class="result" id="scanResult">
+                show result here
+            </p>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="https://quickapp/js/jssdk.hapwebview.min.js" ></script>
+
+<style>
+    .radio{
+        display: flex;
+        align-items: center;
+        height: 30px;
+        background-color: rgb(224, 224, 224);
+        border-radius: 16px;
+        margin-top: 10px;
+        padding: 4px;
+    }
+    html,
+    body {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgb(240, 240, 240);
+        overflow-y: scroll;
+    }
+
+    .line {
+        width: 100%;
+        height: 1px;
+        background-color: rgb(202, 197, 197);
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+
+    .title {
+        color: rgb(39, 39, 39);
+        font-size: 26px;
+        margin: 0px;
+    }
+
+    .card {
+        margin: 16px;
+        flex-direction: column;
+        display: flex;
+        padding: 16px;
+        border-radius: 16px;
+        border-width: 1px;
+        border-color: aliceblue;
+        background-color: white;
+    }
 
     .result {
         margin: 10px;
@@ -134,7 +221,105 @@
     window.onload = prepareButton;
     function prepareButton() {
         document.getElementById('btn1').onclick = function () {
-            window.hab.getEnv(data => {
+            const resultTxt = document.getElementById("pEnvResut")
+            if(!window.hap)
+            {
+                resultTxt.innerText="window.hap not defined";
+                return
+            }
+            window.hap.getEnv(data => {
+               
+                 resultTxt.innerText =JSON.stringify(data)
+            })
+        }
+
+
+        const successCallBack = (data) => {
+            console.log("Scan => successCallBack", data)
+            const resultTxt = document.getElementById("scanResult")
+            resultTxt.innerText =JSON.stringify(data)
+        }
+        const failCallBack = (data, code) => {
+            console.log("Scan => failCallBack", data, code)
+            const resultTxt = document.getElementById("scanResult")
+            resultTxt.innerText =JSON.stringify(data)
+        }
+        const cancelCallBack = () => {
+            console.log("Scan => cancelCallBack")
+            const resultTxt = document.getElementById("scanResult")
+            resultTxt.innerText ="Cancelled"
+        }
+        const completeCallBack = () => {
+            console.log("Scan => completeCallBack")
+        }
+        document.getElementById('btn2').onclick = function () {
+            const select = document.querySelector('input[name="radio"]:checked');
+            console.log(select.value)
+            if(!window.hap)
+            {
+                failCallBack("window.hap not defined")
+                return
+            }
+            window.hap.scan(select.value, successCallBack, failCallBack, cancelCallBack, completeCallBack)
+        }
+
+    }
+
+</script>
+
+
+</html>
+    .result {
+        margin: 10px;
+        border-radius: 8px;
+        padding: 10px;
+        color: rgb(38, 38, 38);
+        background-color: rgb(216, 216, 216);
+        min-height: 100px;
+        word-break: break-all;
+        white-space: normal;
+    }
+
+    option {
+        height: 32px;
+        color: blue;
+        border-radius: 12px;
+        margin: 16px;
+    }
+
+    select {
+        appearance: none;
+        background-color: transparent;
+        width: 90%;
+        font-family: inherit;
+        font-size: inherit;
+        cursor: inherit;
+        line-height: inherit;
+        border-width: 1px;
+        border-radius: 16px;
+        padding: 10px;
+        margin: auto;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    button {
+        background-color: rgb(9, 64, 106);
+        color: white;
+        font-size: 20px;
+        border-radius: 30px;
+        height: 30px;
+        margin: 10PX;
+    }
+</style>
+<script>
+    window.onload = prepareButton;
+    function prepareButton() {
+        document.getElementById('btn1').onclick = function () {
+            window.hap.getEnv(data => {
                 const resultTxt = document.getElementById("pEnvResut")
                  resultTxt.innerText =JSON.stringify(data)
             })
@@ -158,7 +343,7 @@
         document.getElementById('btn2').onclick = function () {
             const select = document.querySelector('input[name="radio"]:checked');
             console.log(select.value)
-            window.hab.scan(select.value, successCallBack, failCallBack, cancelCallBack, completeCallBack)
+            window.hap.scan(select.value, successCallBack, failCallBack, cancelCallBack, completeCallBack)
         }
 
     }
