@@ -150,7 +150,7 @@
         const successCallBack = (data) => {
             console.log("Scan => successCallBack", data)
             const resultTxt = document.getElementById("scanResult")
-            resultTxt.innerText ="success"
+            resultTxt.innerText =JSON.stringify(data)
         }
         const failCallBack = (data, code) => {
             console.log("Scan => failCallBack", data, code)
