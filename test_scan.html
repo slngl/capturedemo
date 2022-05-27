@@ -8,7 +8,7 @@
 <body>
     <div class="container">
         <div class="card">
-            <p class="title">getEnv</p>
+            <p class="title">getEnv method</p>
             <div class="line"></div>
             <button id="btn1">GETENV</button>
             <p class="result" id="pEnvResut">
@@ -16,7 +16,7 @@
             </p>
         </div>
         <div class="card">
-            <p class="title">scan</p>
+            <p class="title">scan method</p>
             <div class="line"></div>
 
             <label class="radio">
@@ -142,7 +142,7 @@
             }
             window.hap.getEnv(data => {
                
-                 resultTxt.innerText =JSON.stringify(data)
+                 resultTxt.innerText =JSON.stringify(data.quickapp)
             })
         }
 
