@@ -151,7 +151,7 @@
         const successCallBack = (data) => {
             console.log("Scan => successCallBack", data)
             const resultTxt = document.getElementById("scanResult")
-            resultTxt.innerText =data.result
+            resultTxt.innerText =JSON.stringify(data.result)
         }
         const failCallBack = (data, code) => {
             console.log("Scan => failCallBack", data, code)
@@ -172,7 +172,17 @@
                 failCallBack("window.hap not defined")
                 return
             }
-            window.hap.scan(select.value, successCallBack, failCallBack, cancelCallBack, completeCallBack)
+            window.hap.scan({
+              scanType: select.value, success: (data) => {
+                console.log(`handling success: ${data.result}`)
+              }, fail: (data, code) => {
+                console.log(`handling fail, code = ${code}`)
+              }, cancel: () => {
+                console.log('cancel')
+              }, complete: () => {
+                console.log('complete')
+              }
+           })
         }
 
     }
